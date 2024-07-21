@@ -13,47 +13,21 @@ import javax.mail.internet.MimeMessage;
 
 public class AppTest {
 
-	private String userName = "projetosteste9393@gmail.com";
-	private String senha = "bugfipnyyufmfwfp";
-	
-	
 	@org.junit.Test
-	public void testeEmail() {
+	public void testeEmail() throws Exception {
+
+		StringBuilder stringBuilderTextoEmail = new StringBuilder();
+
+		stringBuilderTextoEmail.append("Olá <br/><br/>");
+		stringBuilderTextoEmail.append("Clique aqui. <br/><br/>");
 		
-		try {
-		
-		Properties properties = new Properties();
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-		properties.put("mail.smtp.port", "465");
-		properties.put("mail.smtp.socketFactory.port", "465");
-		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		
-		Session session = Session.getInstance(properties, new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				
-				return new PasswordAuthentication(userName, senha);
-			}
-		});
-		
-		Address[] toUser = InternetAddress.parse("projetosteste9393@gmail.com");
-		
-		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(userName));
-		message.setRecipients(Message.RecipientType.TO, toUser);
-		message.setSubject("Chegou o E-mail enviado com Java");
-		message.setText("Olá Programador, você acaba de receber um e-mail enviado com Java.");
-		
-		
-		Transport.send(message);
-		
-		
-		
-		
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+		stringBuilderTextoEmail.append("<a target=\"_blank\" href=\"https://www.google.com.br/\" style=\"color:#2525a7; padding:14px 25px; text-align:center; text-decoration:none; display:inline-block; border-radius:30px; font-size:20px; font-family:courier; border:3px solid green; background-color:#99DA39;\">Clique AQUI</a>");
+
+		String listaDestinatario = "projetosteste9393@gmail.com";
+
+		ObjetoEnviaEmail enviaEmail = new ObjetoEnviaEmail(listaDestinatario, "Djalma Souza",
+				"Testando E-mail com Java.", stringBuilderTextoEmail.toString());
+
+		enviaEmail.enviarEmailAnexo(true);
 	}
 }
